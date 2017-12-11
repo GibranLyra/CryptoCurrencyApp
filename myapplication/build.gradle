@@ -99,4 +99,6 @@ dependencies {
     compile project(path: ':bitcoinmarketservice')
     //Transitions everywhere
     compile "com.andkulikov:transitionseverywhere:1.7.7"
+
+    compile 'im.dacer:AndroidCharts:1.0.4'
 }
