@@ -1,12 +1,29 @@
 package gibran.com.br.bitcoinmarketservice.model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class Ticker {
+    @Expose
+    @SerializedName("date")
     private int date;
+    @Expose
+    @SerializedName("high")
     private String high;
+    @Expose
+    @SerializedName("vol")
     private String vol;
+    @Expose
+    @SerializedName("last")
     private String last;
+    @Expose
+    @SerializedName("low")
     private String low;
+    @Expose
+    @SerializedName("buy")
     private String buy;
+    @Expose
+    @SerializedName("sell")
     private String sell;
 
     public int getDate() {

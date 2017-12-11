@@ -34,6 +34,7 @@ public class CoinApi implements CoinDataSource {
     @Override
     public Observable<Ticker> getTicker(Coin coin) {
         return coinService.getTicker(coin.name())
-                .doOnError(e -> Timber.e(e, "getTicker: %s", e.getMessage()));
+                .doOnError(e -> Timber.e(e, "getTicker: %s", e.getMessage()))
+                .map(tickerTickerContainer -> tickerTickerContainer.getTicker());
     }
 }

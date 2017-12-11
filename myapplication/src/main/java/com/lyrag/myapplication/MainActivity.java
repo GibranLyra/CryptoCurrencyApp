@@ -1,21 +1,20 @@
 package com.lyrag.myapplication;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
+
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import gibran.com.br.bitcoinmarketservice.coin.CoinApi;
 import gibran.com.br.bitcoinmarketservice.model.Coin;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity implements TicketReceiverListener {
     @BindView(R.id.activity_main_bitcoin_price)
     TextView bitCoinPriceText;
     @BindView(R.id.activity_main_litecoin_price)
     TextView liteCoinPriceText;
+
     @BindView(R.id.activity_main_bcash_price)
     TextView bCashPriceText;
 
@@ -24,25 +23,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        TickerReceiver.register(this, this);
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    public void showPrices(HashMap<Coin, String> prices) {
+        bitCoinPriceText.setText(prices.get(Coin.BTC));
+        liteCoinPriceText.setText(prices.get(Coin.LTC));
+        bCashPriceText.setText(prices.get(Coin.BCH));
+    }
 
-        CoinApi.getInstance().getTicker(Coin.BTC)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(ticker -> bitCoinPriceText.setText(ticker.getBuy()));
-
-        CoinApi.getInstance().getTicker(Coin.LTC)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(ticker -> liteCoinPriceText.setText(ticker.getBuy()));
-
-        CoinApi.getInstance().getTicker(Coin.BCH)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(ticker -> bCashPriceText.setText(ticker.getBuy()));
+    @Override
+    protected void onDestroy() {
+        TickerReceiver.unregister(this);
+        super.onDestroy();
     }
 }

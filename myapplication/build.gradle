@@ -97,4 +97,6 @@ dependencies {
     //Circle indicator
     compile 'me.relex:circleindicator:1.2.2@aar'
     compile project(path: ':bitcoinmarketservice')
+    //Transitions everywhere
+    compile "com.andkulikov:transitionseverywhere:1.7.7"
 }
